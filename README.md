@@ -45,6 +45,6 @@ Then you can subscribe to and handle the event with the `on` method.
 
 ```js
 exampleInstance.on('assplode', function (thingToAssplode) {
-  alert('You assploded a' + thingToAssplode)
+  alert('You assploded a ' + thingToAssplode)
 })
 ```
