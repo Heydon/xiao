@@ -1,0 +1,31 @@
+{
+  "name": "example-module",
+  "version": "0.1.2",
+  "description": "An example module.",
+  "main": "example-module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard ./example-module.js",
+    "uglify": "uglifyjs example-module.js -o example-module.min.js",
+    "extract-version": "cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'",
+    "add-version": "echo \"/*! example-module $(npm run extract-version --silent) — © Heydon Pickering */\n$(cat example-module.min.js)\" > example-module.min.js",
+    "build": "npm run uglify && npm run add-version",
+    "precommit": "npm run lint && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heydon/example-module.git"
+  },
+  "keywords": [],
+  "author": "Heydon Pickering",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Heydon/example-module/issues"
+  },
+  "homepage": "https://github.com/Heydon/example-module#readme",
+  "devDependencies": {
+    "husky": "^0.13.3",
+    "standard": "^10.0.2",
+    "uglify-js": "^2.8.22"
+  }
+}
