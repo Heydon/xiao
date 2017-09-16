@@ -23,11 +23,15 @@
     }
 
     var linksById = (id) => {
-      return document.querySelectorAll('[href^="#' + id + '"]')
+      return document.querySelectorAll('[href*="#' + id + '"]')
     }
 
     var routeExists = (route) => {
       return this.ids.find((id) => id === route)
+    }
+
+    var idByURL = (string) => {
+      return string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1)
     }
 
     var reconfigure = (newId, oldId) => {
@@ -62,6 +66,8 @@
         region.setAttribute('aria-label', route.label)
       })
 
+      this._fire('init')
+
       var hash = window.location.hash
 
       if (hash === '' || !routeExists(hash.substr(1))) {
@@ -69,16 +75,13 @@
       } else {
         reconfigure(hash.substr(1))
       }
-
-      this._fire('init')
     })
 
     window.addEventListener('hashchange', (e) => {
-      var newId = window.location.hash.substr(1)
+      var newId = idByURL(window.location.href)
 
       if (routeExists(newId)) {
-        var oldId = e.oldURL.indexOf('#') > -1 ? e.oldURL.substr(e.oldURL.indexOf('#') + 1) : null
-
+        var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
         reconfigure(newId, oldId)
 
         this._fire('reroute', {
