@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+      Xiao | Example
+    </title>
+    <style>
+      [aria-current] {
+        text-decoration: none;
+        border-bottom: 2px solid;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About Xiao</a></li>
+    </ul>
+    <div id="home">
+      Home
+    </div>
+    <div id="about">
+      About
+    </div>
+    <div id="unregistered">
+      Unregistered
+    </div>
+    <script src="../xiao.js"></script>
+    <script>
+      var app = new Xiao(
+        [
+          {
+            id: 'home',
+            label: 'Home',
+            arrived: function () {
+              console.log('arrived home')
+            },
+            departed: function () {
+              console.log('left home')
+            }
+          },
+          {
+            id: 'about',
+            label: 'About Xiao',
+            arrived: function () {
+              console.log('arrived at about')
+            },
+            departed: function () {
+              console.log('left about')
+            }
+          }
+        ],
+        'home'
+      )
+
+      app.on('init', () => {
+        console.log('Xiao app initialized!')
+      })
+
+      app.on('reroute', (e) => {
+        console.log('new route id: ', e.newID)
+        console.log('old route id: ', e.oldID)
+      })
+    </script>
+  </body>
+</html>
