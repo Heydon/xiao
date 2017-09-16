@@ -26,6 +26,6 @@
   "devDependencies": {
     "husky": "^0.13.3",
     "standard": "^10.0.2",
-    "uglify-js": "^2.8.22"
+    "uglify-es": "^3.1.0"
   }
 }

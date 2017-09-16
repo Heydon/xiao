@@ -23,7 +23,7 @@
     }
 
     var linksById = (id) => {
-      return document.querySelectorAll('[href^="#'+ id +'"]')
+      return document.querySelectorAll('[href^="#' + id + '"]')
     }
 
     var routeExists = (route) => {
@@ -66,7 +66,6 @@
 
       if (hash === '' || !routeExists(hash.substr(1))) {
         this.reroute(this.defaultId)
-
       } else {
         reconfigure(hash.substr(1))
       }
