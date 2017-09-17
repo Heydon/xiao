@@ -4,7 +4,7 @@
   function Xiao (routes, defaultId, options) {
     options = options || {}
     this.settings = {
-      //
+      showHide: true
     }
 
     for (var setting in options) {
@@ -18,8 +18,12 @@
     this.ids = routes.map((route) => route.id)
     this._listeners = {}
 
+    var elem = (id) => {
+      return document.getElementById(id)
+    }
+
     var routeById = (id) => {
-      return this.routes.find((route) => id === route.id)
+      return this.routes.find(route => id === route.id)
     }
 
     var linksById = (id) => {
@@ -27,101 +31,90 @@
     }
 
     var routeExists = (route) => {
-      return this.ids.find((id) => id === route)
+      return this.ids.find(id => id === route)
     }
 
     var idByURL = (string) => {
       return string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1)
     }
 
-    var reconfigure = (newId, oldId) => {
-      this.ids.forEach(function (id) {
-        document.getElementById(id).hidden = true
-      })
+    var parentRouteExists = (id) => {
+      return this.ids.find(route => elem(route).contains(elem(id)))
+    }
 
-      var newRegion = document.getElementById(newId)
+    var reconfigure = (newRoute, oldRoute, focusId) => {
+      if (this.settings.showHide) {
+        this.ids.forEach(function (id) {
+          elem(id).hidden = true
+        })
+      }
+
+      var newRegion = elem(newRoute)
       if (newRegion) {
-        newRegion.hidden = false
-        newRegion.focus()
+        if (this.settings.showHide) {
+          newRegion.hidden = false
+        }
+        elem(focusId).setAttribute('tabindex', '-1')
+        elem(focusId).focus()
       }
 
-      if (oldId && routeExists(oldId)) {
-        routeById(oldId).departed()
+      if (oldRoute && routeExists(oldRoute)) {
+        if (routeById(oldRoute).departed) {
+          routeById(oldRoute).departed(elem(oldRoute))
+        }
       }
-      routeById(newId).arrived()
 
-      Array.prototype.forEach.call(linksById(newId), (link) => {
-        link.setAttribute('aria-current', 'page')
-      })
-      Array.prototype.forEach.call(linksById(oldId), (link) => {
-        link.removeAttribute('aria-current')
-      })
+      if (routeById(newRoute).arrived) {
+        routeById(newRoute).arrived(elem(newRoute))
+      }
+
+      if (newRoute !== oldRoute) {
+        Array.prototype.forEach.call(linksById(newRoute), (link) => {
+          link.setAttribute('aria-current', 'true')
+        })
+        Array.prototype.forEach.call(linksById(oldRoute), (link) => {
+          link.removeAttribute('aria-current')
+        })
+      }
+
+      document.title = this.title + ' ' + routeById(newRoute).label
+
+      document.body.scrollTop = 0
     }
 
     window.addEventListener('load', (e) => {
+      this.title = document.title
+
       this.routes.forEach(route => {
-        var region = document.getElementById(route.id)
-        region.setAttribute('tabindex', '-1')
+        var region = elem(route.id)
         region.setAttribute('role', 'region')
         region.setAttribute('aria-label', route.label)
       })
 
-      this._fire('init')
+      var hash = window.location.hash.substr(1)
 
-      var hash = window.location.hash
-
-      if (hash === '' || !routeExists(hash.substr(1))) {
+      if (hash === '' || !routeExists(hash)) {
         this.reroute(this.defaultId)
       } else {
-        reconfigure(hash.substr(1))
+        reconfigure(hash, null, hash)
       }
     })
 
     window.addEventListener('hashchange', (e) => {
-      var newId = idByURL(window.location.href)
+      var id = idByURL(window.location.href)
+      var newRoute = parentRouteExists(id)
+      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
+      var oldRoute = oldId ? parentRouteExists(oldId) : null
 
-      if (routeExists(newId)) {
-        var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
-        reconfigure(newId, oldId)
-
-        this._fire('reroute', {
-          newID: newId,
-          oldID: oldId
-        })
+      if (newRoute) {
+        var focusId = id === newRoute ? newRoute : id
+        reconfigure(newRoute, oldRoute, focusId)
       }
     })
   }
 
-  Xiao.prototype.reroute = function (hash) {
-    window.location.hash = hash
-
-    return this
-  }
-
-  Xiao.prototype._fire = function (type, data) {
-    var listeners = this._listeners[type] || []
-
-    listeners.forEach(function (listener) {
-      listener(data)
-    })
-  }
-
-  Xiao.prototype.on = function (type, handler) {
-    if (typeof this._listeners[type] === 'undefined') {
-      this._listeners[type] = []
-    }
-
-    this._listeners[type].push(handler)
-
-    return this
-  }
-
-  Xiao.prototype.off = function (type, handler) {
-    var index = this._listeners[type].indexOf(handler)
-
-    if (index > -1) {
-      this._listeners[type].splice(index, 1)
-    }
+  Xiao.prototype.reroute = function (id) {
+    window.location.hash = id
 
     return this
   }
