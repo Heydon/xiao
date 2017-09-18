@@ -17,6 +17,7 @@
     this.defaultId = defaultId
     this.ids = routes.map((route) => route.id)
     this._listeners = {}
+    this.paramString = null
 
     var elem = (id) => {
       return document.getElementById(id)
@@ -68,8 +69,16 @@
         }
       }
 
+      var params
+      if (window.location.href.includes('?')) {
+        var query = paramsByURL(window.location.href)
+        params = query !== 0 ? JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
+      } else {
+        params = null
+      }
+
       if (routeById(newRoute).arrived) {
-        routeById(newRoute).arrived(elem(newRoute), this.params)
+        routeById(newRoute).arrived(elem(newRoute), params)
       }
 
       if (newRoute !== oldRoute) {
@@ -87,6 +96,7 @@
     }
 
     window.addEventListener('load', (e) => {
+      console.log('load!!')
       this.title = document.title
 
       this.routes.forEach(route => {
@@ -114,19 +124,6 @@
         var focusId = id === newRoute ? newRoute : id
         reconfigure(newRoute, oldRoute, focusId)
       }
-    })
-
-    var paramLinks = document.querySelectorAll('[href*="?"]:not([href^="http"])')
-    Array.prototype.forEach.call(paramLinks, (link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault()
-        var params = paramsByURL(link.href)
-        this.params = {
-          string: '?' + params,
-          object: JSON.parse('{"' + decodeURI(params).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
-        }
-        window.location.hash = idByURL(link.href)
-      })
     })
   }
 
