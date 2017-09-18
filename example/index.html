@@ -16,7 +16,7 @@
   </head>
   <body>
     <ul>
-      <li><a href="#home">Home</a></li>
+      <li><a href="#home?poo=wee">Home</a></li>
       <li><a href="#about">About Xiao</a></li>
       <li><a href="#subsection">Section in about</a></li>
     </ul>
@@ -38,8 +38,9 @@
           {
             id: 'home',
             label: 'Home',
-            arrived: function (elem) {
+            arrived: function (elem, params) {
               console.log('new elem:', elem)
+              console.log('params:', params)
             },
             departed: function (elem) {
               console.log('old elem:', elem)
@@ -48,8 +49,9 @@
           {
             id: 'about',
             label: 'About Xiao',
-            arrived: function (elem) {
+            arrived: function (elem, params) {
               console.log('new elem:', elem)
+              console.log('params:', params)
             },
             departed: function (elem) {
               console.log('old elem:', elem)
