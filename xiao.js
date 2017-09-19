@@ -1,10 +1,13 @@
+/* global CustomEvent */
+
 (function (window) {
   'use strict'
 
   function Xiao (routes, defaultId, options) {
     options = options || {}
     this.settings = {
-      showHide: true
+      showHide: true,
+      separator: '|'
     }
 
     for (var setting in options) {
@@ -23,6 +26,8 @@
       return document.getElementById(id)
     }
 
+    var each = Array.prototype.forEach
+
     var routeById = (id) => {
       return this.routes.find(route => id === route.id)
     }
@@ -40,14 +45,18 @@
     }
 
     var paramsByURL = (string) => {
-      return string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1)
+      return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : undefined
+    }
+
+    var paramsToObject = (string) => {
+      return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : undefined
     }
 
     var parentRouteExists = (id) => {
       return this.ids.find(route => elem(route).contains(elem(id)))
     }
 
-    var reconfigure = (newRoute, oldRoute, focusId) => {
+    var reconfigure = (newRoute, oldRoute, oldURL, focusId) => {
       if (this.settings.showHide) {
         this.ids.forEach(function (id) {
           elem(id).hidden = true
@@ -63,40 +72,43 @@
         elem(focusId).focus()
       }
 
+      var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : undefined
+
       if (oldRoute && routeExists(oldRoute)) {
         if (routeById(oldRoute).departed) {
-          routeById(oldRoute).departed(elem(oldRoute))
+          routeById(oldRoute).departed(elem(oldRoute), oldParams)
         }
       }
 
-      var params
-      if (window.location.href.includes('?')) {
-        var query = paramsByURL(window.location.href)
-        params = query !== 0 ? JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
-      } else {
-        params = null
-      }
+      var newParams = paramsToObject(paramsByURL(window.location.href))
 
       if (routeById(newRoute).arrived) {
-        routeById(newRoute).arrived(elem(newRoute), params)
+        routeById(newRoute).arrived(elem(newRoute), newParams)
       }
 
-      if (newRoute !== oldRoute) {
-        Array.prototype.forEach.call(linksById(newRoute), (link) => {
-          link.setAttribute('aria-current', 'true')
-        })
-        Array.prototype.forEach.call(linksById(oldRoute), (link) => {
-          link.removeAttribute('aria-current')
-        })
+      each.call(document.querySelectorAll('[aria-current]'), (link) => {
+        link.removeAttribute('aria-current')
+      })
+      each.call(linksById(newRoute), (link) => {
+        link.setAttribute('aria-current', 'true')
+      })
+
+      document.title = this.title + this.settings.separator + routeById(newRoute).label
+
+      if (this.settings.showHide) {
+        document.body.scrollTop = 0
       }
 
-      document.title = this.title + ' ' + routeById(newRoute).label
-
-      document.body.scrollTop = 0
+      var reroute = new CustomEvent('reroute', {
+        detail: {
+          newRoute: newRoute,
+          oldRoute: oldRoute
+        }
+      })
+      window.dispatchEvent(reroute)
     }
 
     window.addEventListener('load', (e) => {
-      console.log('load!!')
       this.title = document.title
 
       this.routes.forEach(route => {
@@ -110,25 +122,25 @@
       if (hash === '' || !routeExists(hash)) {
         this.reroute(this.defaultId)
       } else {
-        reconfigure(hash, null, hash)
+        reconfigure(hash, undefined, undefined, hash)
       }
     })
 
     window.addEventListener('hashchange', (e) => {
       var id = idByURL(window.location.href)
       var newRoute = parentRouteExists(id)
-      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
-      var oldRoute = oldId ? parentRouteExists(oldId) : null
+      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : undefined
+      var oldRoute = oldId ? parentRouteExists(oldId) : undefined
 
       if (newRoute) {
         var focusId = id === newRoute ? newRoute : id
-        reconfigure(newRoute, oldRoute, focusId)
+        reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId)
       }
     })
   }
 
-  Xiao.prototype.reroute = function (id) {
-    window.location.hash = id
+  Xiao.prototype.reroute = function (id, params) {
+    window.location.hash = id + (params || '')
     return this
   }
 
