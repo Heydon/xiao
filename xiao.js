@@ -16,43 +16,39 @@
       }
     }
 
-    this.routes = routes
-    this.defaultId = defaultId
     this.ids = routes.map((route) => route.id)
-    this._listeners = {}
-    this.paramString = null
 
-    var elem = (id) => {
+    var elem = id => {
       return document.getElementById(id)
     }
 
     var each = Array.prototype.forEach
 
-    var routeById = (id) => {
-      return this.routes.find(route => id === route.id)
+    var routeById = id => {
+      return routes.find(route => id === route.id)
     }
 
-    var linksById = (id) => {
+    var linksById = id => {
       return document.querySelectorAll('[href*="#' + id + '"]')
     }
 
-    var routeExists = (route) => {
+    var routeExists = route => {
       return this.ids.find(id => id === route)
     }
 
-    var idByURL = (string) => {
+    var idByURL = string => {
       return string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1)
     }
 
-    var paramsByURL = (string) => {
-      return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : undefined
+    var paramsByURL = string => {
+      return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null
     }
 
-    var paramsToObject = (string) => {
-      return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : undefined
+    var paramsToObject = string => {
+      return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
     }
 
-    var parentRouteExists = (id) => {
+    var parentRouteExists = id => {
       return this.ids.find(route => elem(route).contains(elem(id)))
     }
 
@@ -72,18 +68,18 @@
         elem(focusId).focus()
       }
 
-      var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : undefined
+      var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : null
 
       if (oldRoute && routeExists(oldRoute)) {
         if (routeById(oldRoute).departed) {
-          routeById(oldRoute).departed(elem(oldRoute), oldParams)
+          routeById(oldRoute).departed(elem(oldRoute), oldParams, routes)
         }
       }
 
       var newParams = paramsToObject(paramsByURL(window.location.href))
 
       if (routeById(newRoute).arrived) {
-        routeById(newRoute).arrived(elem(newRoute), newParams)
+        routeById(newRoute).arrived(elem(newRoute), newParams, routes)
       }
 
       each.call(document.querySelectorAll('[aria-current]'), (link) => {
@@ -95,14 +91,14 @@
 
       document.title = this.title + this.settings.separator + routeById(newRoute).label
 
-      if (this.settings.showHide) {
+      if (this.settings.showHide && newRoute === focusId) {
         document.body.scrollTop = 0
       }
 
       var reroute = new CustomEvent('reroute', {
         detail: {
-          newRoute: newRoute,
-          oldRoute: oldRoute
+          newRoute: routeById(newRoute),
+          oldRoute: routeById(oldRoute)
         }
       })
       window.dispatchEvent(reroute)
@@ -111,7 +107,7 @@
     window.addEventListener('load', (e) => {
       this.title = document.title
 
-      this.routes.forEach(route => {
+      routes.forEach(route => {
         var region = elem(route.id)
         region.setAttribute('role', 'region')
         region.setAttribute('aria-label', route.label)
@@ -119,18 +115,18 @@
 
       var hash = window.location.hash.substr(1)
 
-      if (hash === '' || !routeExists(hash)) {
-        this.reroute(this.defaultId)
+      if (!hash || !routeExists(hash)) {
+        this.reroute(defaultId)
       } else {
-        reconfigure(hash, undefined, undefined, hash)
+        reconfigure(hash, null, null, hash)
       }
     })
 
     window.addEventListener('hashchange', (e) => {
       var id = idByURL(window.location.href)
       var newRoute = parentRouteExists(id)
-      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : undefined
-      var oldRoute = oldId ? parentRouteExists(oldId) : undefined
+      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
+      var oldRoute = oldId ? parentRouteExists(oldId) : null
 
       if (newRoute) {
         var focusId = id === newRoute ? newRoute : id

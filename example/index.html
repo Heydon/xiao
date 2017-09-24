@@ -36,30 +36,35 @@
     <button id="go-to-home">go to home</button>
     <script src="../xiao.js"></script>
     <script>
+
       var app = new Xiao(
         [
           {
             id: 'home',
             label: 'Home',
-            arrived: function (elem, params) {
+            arrived(elem, params, routes) {
               console.log('new elem:', elem)
               console.log('new params:', params)
+              console.log('routes object:', routes)
             },
-            departed: function (elem, params) {
+            departed(elem, params, routes) {
               console.log('old elem:', elem)
               console.log('old params:', params)
+              console.log('routes object:', routes)
             }
           },
           {
             id: 'about',
             label: 'About Xiao',
-            arrived: function (elem, params) {
+            arrived(elem, params, routes) {
               console.log('new elem:', elem)
               console.log('new params:', params)
+              console.log('routes object:', routes)
             },
-            departed: function (elem, params) {
+            departed(elem, params, routes) {
               console.log('old elem:', elem)
               console.log('old params:', params)
+              console.log('routes object:', routes)
             }
           }
         ],
@@ -70,7 +75,7 @@
         app.reroute('home', '?penis=butt');
       })
 
-      window.addEventListener('reroute', function (e) {
+      window.addEventListener('reroute', e => {
         console.log('Rerouted!! Old route:', e.detail.oldRoute)
       })
     </script>
