@@ -4,79 +4,79 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>
-      Xiao
-    </title>
-    <style>
-      [aria-current] {
-        text-decoration: none;
-        border-bottom: 2px solid;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <title>Xiao Demo</title>
   </head>
   <body>
-    <ul>
-      <li><a href="#home?poo=wee">Home</a></li>
-      <li><a href="#about?fuck=fuck">About Xiao</a></li>
-      <li><a href="#nope">Not a route</a></li>
-      <li><a href="#subsection2">Section in about</a></li>
-    </ul>
-    <div id="home">
-      Home
-      <div id="subsection1">subsection <a href="#about">about</a></div>
-    </div>
-    <div id="about">
-      About
-      <div id="subsection2">subsection <a href="#home">home</a></div>
-      <div id="subsection1">other subsection <a href="#subsection1">home subsection</a></div>
-    </div>
-    <div id="unregistered">
-      Unregistered
-    </div>
-    <button id="go-to-home">go to home</button>
-    <script src="../xiao-es5.js"></script>
+    <header>
+      <svg aria-hidden="true" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="73.548mm" width="180.34mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 638.98263 260.60408">
+       <g transform="translate(838.41 -52.495)">
+        <path style="stroke-width:0;fill:#000000" d="m258.98 0v19.867h20v-19.867h-20zm120.72 1.0098v20h20v-20l-20-.0002zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v80h-100v-80h-20v199.59h20v-99.59h100v98.58h20v-198.58h-20zm-100 0h20v-20h-20v20zm20-20h20v-20h-20v20zm199.42-40v20h20v-20l-20-.0002zm20 20v20h20v-20h-20zm20 20v20h19.86v138.58h20v-138.58h-19.86v-20h-20zm-40-20h-20v20h20v-20zm-20 20h-20v20h20v-20zm-280.14-1.143v219.72h20v-219.72l-20-.003zm-100 .051v20h20v-20h-20zm0 20h-20v20h20v-20zm-119.62-19.627v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v19.999h20v-19.999h-20zm419.62-19.281v138.58h20v-138.58h-20zm-380.21 19.404v19.996h20v-19.996h-20zm79.3.383v20.003h20v-20.003h-20zm0 20.003h-20v20h20v-20zm-198.07-19.575v19.995h20v-19.995h-20zm20 19.995v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v19.21h-19v20h20v-19.21h18.494v19.5h19.5v19.07h-19.916v20h20v-19.57h19.912v-20h-19.496v-19.5h-19.494v-19.5h-20zm58.99 59v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm-79.912-20.43h-20v20h-20v20h20v-20h20v-20zm-38.078-39.36h-20v20h20v-20zm-20 20h-20v20h20v-20zm77.984-100.01v20h19.996v-20h-19.996zm20.376 19.87v20h20v-20h-20zm-39.788.50v20h20v-20h-20zm80.218.64v20h20v-20h-20zm-20.29 19.37v20h20v-20h-20zm20.29 19.56v20h19.28v20h20v-20h-19.28v-20h-20zm39.28 40v20h20v-20h-20zm-79.63-39.85v20h20v-20h-20zm399.68 40.07v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm20 0h20v-20h-20v20zm20-20h20v-20h-20v20z" transform="translate(-838.41 52.495)"/>
+       </g>
+      </svg>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#xhr">XHR content</a></li>
+          <li><a href="#subsections">Subsections</a></li>
+          <li><a href="#params?foo=bar">Params example</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div id="home">
+        <h1>A demo built with Xiao</h1>
+      </div>
+      <div id="xhr">
+        <h1>XHR loaded content</h1>
+      </div>
+      <div id="subsections">
+        <h1>Subsections</h1>
+        <p>When you <a href="#a-subsection">link to a subsection</a> from within a route that is already active, it just behaves as a basic hash fragment and no JavaScript is fired.</p>
+        <h2 id="a-subsection">A subsection</h2>
+      </div>
+      <div id="params">
+        <h1>Using params</h1>
+      </div>
+    </main>
+    <script src="../xiao.js"></script>
     <script>
-
       var app = new Xiao(
         [
           {
             id: 'home',
             label: 'Home',
+          },
+          {
+            id: 'subsections',
+            label: 'Subsections within routes'
+          },
+          {
+            id: 'xhr',
+            label: 'XHR content',
             arrived(elem, params, routes) {
-              console.log('new elem:', elem)
-              console.log('new params:', params)
-              console.log('routes object:', routes)
+
             },
             departed(elem, params, routes) {
-              console.log('old elem:', elem)
-              console.log('old params:', params)
-              console.log('routes object:', routes)
+
             }
           },
           {
-            id: 'about',
-            label: 'About Xiao',
+            id: 'params',
+            label: 'Params example',
             arrived(elem, params, routes) {
-              console.log('new elem:', elem)
-              console.log('new params:', params)
-              console.log('routes object:', routes)
+
             },
             departed(elem, params, routes) {
-              console.log('old elem:', elem)
-              console.log('old params:', params)
-              console.log('routes object:', routes)
+
             }
           }
         ],
         'home'
       )
 
-      document.getElementById('go-to-home').addEventListener('click', function () {
-        app.reroute('home', '?penis=butt');
-      })
-
       window.addEventListener('reroute', e => {
-        console.log('Rerouted!! Old route:', e.detail.oldRoute)
+        console.log('Old route:', e.detail.oldRoute)
       })
     </script>
   </body>

@@ -4,7 +4,9 @@ A small, accessible, framework agnostic, browser-driven routing system. Make sin
 
 ## Install
 
+```
 npm i xiao
+```
 
 ## Include
 
@@ -109,7 +111,9 @@ As you can see, there are three parameters available in each case:
 * **params** (object): Any params passed to the route via a query string (e.g. `?foo=bar&ding=dong` will be passed as `{foo: 'bar', ding: 'dong'}`)
 * **routes** (object): The whole routes object, for convenience
 
-## The `reroute` event
+## Events
+
+### `reroute`
 
 Whenever a new route is invoked, the `reroute` event is dispatched from `window`. This allows you to affect any part of the page in response to a reroute. Secreted in this `CustomEvent`'s `details` object are the old and new route objects.
 
@@ -129,3 +133,16 @@ The first argument is the desired route id and the second any params you may wan
 ```js
 app.reroute('login', '?redirect=true')
 ```
+
+## Settings
+
+The third (optional) argument when instantiating a Xiao app is the settings object. These are the options:
+
+* **separator**: The string used to separate the app's name from the route label in the `<title>` (default: "|")
+* **showHide**: Whether to show only one route at a time. If set to `false`, routes are all persistently visible and the browser navigates between them like standard hash fragments (default: `true`)
+* **arrived**: Like the arrived method available for individual routes, but applies to all routes (see above)
+* **departed**: Like the departed method available for individual routes, but applies to all routes (see above)
+
+## Framework independence
+
+Xiao is just a simple router which respects browser standards. The actual functionality you provide within individual Xiao routes is totally up to you. You can use plain JavaScript, React or Vue components, whatever you like. With Xiao, simple single-page applications can be just that: simple. But you can add as many dependencies and as much code to a Xiao skeleton as you like.

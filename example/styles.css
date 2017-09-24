@@ -1,0 +1,102 @@
+html {
+  font-size: calc(1em + 0.5vw);
+  font-family: Futura, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+* + * {
+  margin-top: 1.5rem;
+}
+
+br,
+dt,
+dd,
+th,
+td,
+option,
+[hidden] + *,
+li + li,
+body,
+.main-and-footer {
+    margin-top: 0;
+}
+
+body {
+  max-width: 35rem;
+  margin: 1.5rem auto;
+  line-height: 1.5;
+  padding: 0 1.5rem;
+}
+
+h1, h2, h3 {
+  line-height: 1.125;
+}
+
+h1 {
+  font-size: 1.66rem;
+}
+
+h2 {
+  font-size: 1.33rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+main {
+  margin-top: 3rem;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  flex-flow: row wrap;
+}
+
+nav li {
+  line-height: 1;
+}
+
+nav a {
+  text-decoration: none;
+  line-height: 1;
+}
+
+nav [aria-current] {
+  border-bottom: 4px solid;
+  transition: border 0.25s ease-in;
+}
+
+[tabindex="-1"]:focus,
+div:not([tabindex]):focus {
+  outline: none;
+}
+
+header {
+  text-align: center;
+}
+
+header svg {
+  height: 4rem;
+  width: auto;
+}
+
+@media (max-width: 550px) {
+  nav li {
+    width: 50%;
+    padding: 0.5rem;
+  }
+  
+  nav a {
+    display: inline-block;
+  }
+}

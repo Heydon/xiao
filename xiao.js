@@ -7,7 +7,9 @@
     options = options || {}
     this.settings = {
       showHide: true,
-      separator: '|'
+      separator: '|',
+      arrived: null,
+      departed: null
     }
 
     for (var setting in options) {
@@ -16,7 +18,7 @@
       }
     }
 
-    this.ids = routes.map((route) => route.id)
+    this.ids = routes.map(route => route.id)
 
     var elem = id => {
       return document.getElementById(id)
@@ -71,25 +73,30 @@
       var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : null
 
       if (oldRoute && routeExists(oldRoute)) {
+        if (this.settings.departed) {
+          this.settings.departed(elem(oldRoute), oldParams, routes)
+        }
         if (routeById(oldRoute).departed) {
           routeById(oldRoute).departed(elem(oldRoute), oldParams, routes)
         }
       }
 
       var newParams = paramsToObject(paramsByURL(window.location.href))
-
+      if (this.settings.arrived) {
+        this.settings.arrived(elem(newRoute), newParams, routes)
+      }
       if (routeById(newRoute).arrived) {
         routeById(newRoute).arrived(elem(newRoute), newParams, routes)
       }
 
-      each.call(document.querySelectorAll('[aria-current]'), (link) => {
+      each.call(document.querySelectorAll('[aria-current]'), link => {
         link.removeAttribute('aria-current')
       })
-      each.call(linksById(newRoute), (link) => {
+      each.call(linksById(newRoute), link => {
         link.setAttribute('aria-current', 'true')
       })
 
-      document.title = this.title + this.settings.separator + routeById(newRoute).label
+      document.title = `${this.title} ${this.settings.separator} ${routeById(newRoute).label}`
 
       if (this.settings.showHide && newRoute === focusId) {
         document.body.scrollTop = 0
@@ -104,7 +111,7 @@
       window.dispatchEvent(reroute)
     }
 
-    window.addEventListener('load', (e) => {
+    window.addEventListener('load', e => {
       this.title = document.title
 
       routes.forEach(route => {
@@ -113,7 +120,8 @@
         region.setAttribute('aria-label', route.label)
       })
 
-      var hash = window.location.hash.substr(1)
+      var hash = idByURL(window.location.href)
+      console.log(hash)
 
       if (!hash || !routeExists(hash)) {
         this.reroute(defaultId)
@@ -122,13 +130,13 @@
       }
     })
 
-    window.addEventListener('hashchange', (e) => {
+    window.addEventListener('hashchange', e => {
       var id = idByURL(window.location.href)
       var newRoute = parentRouteExists(id)
       var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null
       var oldRoute = oldId ? parentRouteExists(oldId) : null
 
-      if (newRoute) {
+      if (newRoute && newRoute !== oldRoute) {
         var focusId = id === newRoute ? newRoute : id
         reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId)
       }

@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/Heydon/xiao#readme",
   "devDependencies": {
-    "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015-script": "^1.1.0",
     "husky": "^0.13.3",
