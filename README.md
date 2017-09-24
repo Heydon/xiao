@@ -1,4 +1,4 @@
-# Xiao
+# ![Xiao](images/xiao.png)
 
 A small, accessible, framework agnostic, browser-driven routing system. Make single page applications with real URLs.
 

@@ -131,7 +131,6 @@
       });
 
       var hash = idByURL(window.location.href);
-      console.log(hash);
 
       if (!hash || !routeExists(hash)) {
         _this.reroute(defaultId);
