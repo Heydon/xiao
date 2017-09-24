@@ -16,7 +16,7 @@ npm i xiao
 
 In Xiao, routes are just subdocuments of web pages with metadata and (sometimes) methods attached to them. Each is identified by an `id` which corresponds to both a page element (say `id="home"`) and a hash fragment (say `#home`).
 
-Before initializing your Xiao app, you define a routes object. Only the route `id` and route label are mandatory properties.
+Before initializing your Xiao app, you define a routes array. Only the route `id` and route label are mandatory properties.
 
 ```js
 const routes = [
@@ -35,7 +35,7 @@ const routes = [
 ]
 ```
 
-This routes object is supplied as the first argument of the instantiated Xiao app. The default route — the one the user is directed to when hitting the root of the application — is the second mandatory argument.
+This routes array is supplied as the first argument of the instantiated Xiao app. The default route — the one the user is directed to when hitting the root of the application — is the second mandatory argument.
 
 ```
 const app = new Xiao(routes, 'home')
@@ -61,8 +61,8 @@ On initialization, Xiao gives each element corresponding to a route `role="regio
 
 When a user navigates to a hash fragment, Xiao determines if that hash fragment either
 
-* Corresponds to an element that corresponds to a route in the routes object
-* Corresponds to an element _inside_ an element that corresponds to a route in the routes object
+* Corresponds to an element that corresponds to a route in the routes array
+* Corresponds to an element _inside_ an element that corresponds to a route in the routes array
 
 In default operation, whether you navigate to a route element or a route child element, the previous route element is hidden and the new one revealed. For keyboard accessibility, focus is sent to the newly revealed route element.
 
@@ -109,7 +109,7 @@ As you can see, there are three parameters available in each case:
 
 * **elem** (node): the HTML element that corresponds to the route (carries the route `id`)
 * **params** (object): Any params passed to the route via a query string (e.g. `?foo=bar&ding=dong` will be passed as `{foo: 'bar', ding: 'dong'}`)
-* **routes** (object): The whole routes object, for convenience
+* **routes** (object): The whole routes array, for convenience
 
 ## Events
 
