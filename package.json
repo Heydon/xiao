@@ -6,10 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard ./xiao.js",
-    "uglify": "uglifyjs xiao.js -o xiao.min.js",
+    "uglify": "uglifyjs xiao.js -o xiao.min.js && npm run es5 && uglifyjs xiao-es5.js -o xiao-es5.min.js",
     "extract-version": "cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'",
     "add-version": "echo \"/*! xiao $(npm run extract-version --silent) — © Heydon Pickering */\n$(cat xiao.min.js)\" > xiao.min.js",
     "build": "npm run uglify && npm run add-version",
+    "es5": "babel xiao.js -o xiao-es5.js --presets=es2015-script",
     "precommit": "npm run lint && npm run build"
   },
   "repository": {
@@ -24,6 +25,9 @@
   },
   "homepage": "https://github.com/Heydon/xiao#readme",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015-script": "^1.1.0",
     "husky": "^0.13.3",
     "standard": "^10.0.2",
     "uglify-es": "^3.1.0"
