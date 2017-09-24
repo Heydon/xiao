@@ -9,7 +9,9 @@
     options = options || {};
     this.settings = {
       showHide: true,
-      separator: '|'
+      separator: '|',
+      arrived: null,
+      departed: null
     };
 
     for (var setting in options) {
@@ -81,13 +83,18 @@
       var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : null;
 
       if (oldRoute && routeExists(oldRoute)) {
+        if (_this.settings.departed) {
+          _this.settings.departed(elem(oldRoute), oldParams, routes);
+        }
         if (routeById(oldRoute).departed) {
           routeById(oldRoute).departed(elem(oldRoute), oldParams, routes);
         }
       }
 
       var newParams = paramsToObject(paramsByURL(window.location.href));
-
+      if (_this.settings.arrived) {
+        _this.settings.arrived(elem(newRoute), newParams, routes);
+      }
       if (routeById(newRoute).arrived) {
         routeById(newRoute).arrived(elem(newRoute), newParams, routes);
       }
@@ -99,7 +106,7 @@
         link.setAttribute('aria-current', 'true');
       });
 
-      document.title = _this.title + _this.settings.separator + routeById(newRoute).label;
+      document.title = _this.title + ' ' + _this.settings.separator + ' ' + routeById(newRoute).label;
 
       if (_this.settings.showHide && newRoute === focusId) {
         document.body.scrollTop = 0;
@@ -123,7 +130,8 @@
         region.setAttribute('aria-label', route.label);
       });
 
-      var hash = window.location.hash.substr(1);
+      var hash = idByURL(window.location.href);
+      console.log(hash);
 
       if (!hash || !routeExists(hash)) {
         _this.reroute(defaultId);
@@ -138,7 +146,7 @@
       var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null;
       var oldRoute = oldId ? parentRouteExists(oldId) : null;
 
-      if (newRoute) {
+      if (newRoute && newRoute !== oldRoute) {
         var focusId = id === newRoute ? newRoute : id;
         reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId);
       }
