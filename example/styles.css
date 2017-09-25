@@ -93,7 +93,7 @@ header svg {
 pre {
   font-size: 0.75rem;
   padding: 1rem;
-  overflow-x: hidden;
+  overflow-x: auto;
   border: 1px solid;
 }
 
