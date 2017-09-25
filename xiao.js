@@ -122,10 +122,10 @@
 
       var hash = idByURL(window.location.href)
 
-      if (!hash || !routeExists(hash)) {
+      if (!hash || !parentRouteExists(hash)) {
         this.reroute(defaultId)
       } else {
-        reconfigure(hash, null, null, hash)
+        reconfigure(parentRouteExists(hash), null, null, hash)
       }
     })
 

@@ -25,15 +25,43 @@
     </header>
     <main>
       <div id="home">
-        <h1>A demo built with Xiao</h1>
+        <h1>Welcome to the Xiao demo page</h1>
+        <p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement and without the complexity.</p>
+        <p>This is the default route, <code>home</code>, and just contains static content, loaded with the web page from the server. Note the <code>id="home"</code> attribution in the HTML:</p>
+<pre><code>&lt;div id="home">
+  &lt;h1>A demo built with Xiao&lt;/h1>
+  &lt;p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement and without the complexity.&lt;/p>
+  &lt;p>This is the default route, &lt;code>home&lt;/code>, and just contains static content, loaded with the web page from the server. Note the &lt;code>id="home"&lt;/code> attribution in the HTML:&lt;/p>
+&lt;/div></code></pre>
+        <p>To make Xiao recognize this element as a route element, you add it to a routes array when you instantiate the app.</p>
+<pre><code>var app = new Xiao([{ id: 'home', label: 'Home'  }], 'home')</code></pre>
+        <p>The second argument defines the default route, which will be activated if no route hash is provided in the web address on page load.</p>
+        <h2>Accessibility semantics</h2>
+        <p>Route elements are given assistive technology accessible information when a Xiao app is initialized. Note <code>role="region"</code> and <code>aria-label="Home"</code> (from the route object's <code>label</code> property):</p>
+<pre><code>&lt;div id="home" <span class="hl">role="region"</span> <span class="hl">aria-label="Home"</span>>
+  &lt;h1>A demo built with Xiao&lt;/h1>
+  &lt;p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement and without the complexity.&lt;/p>
+  &lt;p>This is the default route, &lt;code>home&lt;/code>, and just contains static content, loaded with the web page from the server. Note the &lt;code>id="home"&lt;/code> attribution in the HTML:&lt;/p>
+&lt;/div></code></pre>
+        <div id="focus-management">
+          <h2>Focus management</h2>
+          <p>Whenever the hash changes in a Xiao routed app's URL, Xiao determines if it corresponds to a route or an element inside a route. If so, it will move focus to that element. This will move keyboard users into the correct position, and elicit the announcement of accessibility information in screen readers. For example: <em>"main, region, XHR content"</em>.</p>
+          <p>Try opening developer tools, clicking <a href="#subsections">this Subsections link</a>, then entering <code>document.activeElement</code> into your console. The active element is the focused element.</p>
+        </div>
       </div>
-      <div id="xhr">
-        <h1>XHR loaded content</h1>
+      <div id="dynamic">
+        <h1>Dynamic content</h1>
       </div>
       <div id="subsections">
         <h1>Subsections</h1>
         <p>When you <a href="#a-subsection">link to a subsection</a> from within a route that is already active, it just behaves as a basic hash fragment and no JavaScript is fired.</p>
-        <h2 id="a-subsection">A subsection</h2>
+        <div id="a-subsection">
+          <h2>A subsection</h2>
+          <p>Alternatively, if you link to a subsection in a <em>different</em> route, like the <a href="#focus-management">subsection about focus management</a> on the Home page, the route is revealed, envents and methods fired, and the subsection brought into view.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dignissim molestie diam. Integer fermentum nisi eget vehicula tristique. Vivamus leo justo, pharetra quis euismod ac, vestibulum non neque. Ut eget est sem. Ut quis ultricies mauris. Donec mauris tortor, posuere non mi ac, accumsan rutrum sapien.</p>
+          <p>Phasellus suscipit libero blandit sapien feugiat, vel mattis velit venenatis. Aenean eu ligula viverra tellus accumsan cursus ut et lorem. Donec non laoreet ex. In vitae turpis felis. Nam sollicitudin sit amet orci et hendrerit. Nulla congue dictum finibus.</p>
+          <p>Ut ut ligula porttitor purus dictum faucibus. Aliquam suscipit dui in augue pharetra, sed pellentesque dolor fringilla. Donec ornare est eget sapien tristique rutrum. Nulla facilisi. Praesent nec euismod leo. Morbi nunc dui, rhoncus quis massa ut, mollis gravida mauris. Praesent quis nisl ut ipsum ultrices mollis. Vivamus at ex orci.</p>
+        </div>
       </div>
       <div id="params">
         <h1>Using params</h1>
@@ -52,8 +80,8 @@
             label: 'Subsections within routes'
           },
           {
-            id: 'xhr',
-            label: 'XHR content',
+            id: 'dynamic',
+            label: 'Dynamic content',
             arrived(elem, params, routes) {
 
             },

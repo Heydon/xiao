@@ -90,6 +90,28 @@ header svg {
   width: auto;
 }
 
+pre {
+  font-size: 0.75rem;
+  padding: 1rem;
+  overflow-x: hidden;
+  border: 1px solid;
+}
+
+.hl {
+  background: #000; 
+  outline: 2px solid #000;
+  color: #fff;
+}
+
+@keyframes flash {
+  0% { color: #fff }
+  100% { color: #000 }
+}
+
+#a-subsection:target, #focus-management:target {
+  animation: flash 1s ease-in;
+}
+
 @media (max-width: 550px) {
   nav li {
     width: 50%;
