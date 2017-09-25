@@ -17,7 +17,7 @@
       <nav>
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a href="#xhr">XHR content</a></li>
+          <li><a href="#dynamic">Dynamic content</a></li>
           <li><a href="#subsections">Subsections</a></li>
           <li><a href="#params?foo=bar">Params example</a></li>
         </ul>
@@ -51,6 +51,7 @@
       </div>
       <div id="dynamic">
         <h1>Dynamic content</h1>
+        <div class="timestamp box"></div>
       </div>
       <div id="subsections">
         <h1>Subsections</h1>
@@ -83,7 +84,9 @@
             id: 'dynamic',
             label: 'Dynamic content',
             arrived(elem, params, routes) {
-
+              var time = Date.now();
+              var dynamicElem = elem.querySelector('.timestamp')
+              dynamicElem.textContent = `Route arrival timestamp: ${time}`
             },
             departed(elem, params, routes) {
 

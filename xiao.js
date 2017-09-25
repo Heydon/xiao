@@ -39,7 +39,7 @@
     }
 
     var idByURL = string => {
-      return string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1)
+      return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null
     }
 
     var paramsByURL = string => {
@@ -99,6 +99,7 @@
       document.title = `${this.title} ${this.settings.separator} ${routeById(newRoute).label}`
 
       if (this.settings.showHide && newRoute === focusId) {
+        document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
       }
 
