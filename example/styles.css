@@ -110,6 +110,10 @@ pre {
   outline-offset: 2px;
 }
 
+main ul {
+  padding-left: 2rem;
+}
+
 @keyframes flash {
   0% { color: #fff }
   100% { color: #000 }

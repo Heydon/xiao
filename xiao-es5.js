@@ -47,7 +47,7 @@
     };
 
     var idByURL = function idByURL(string) {
-      return string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1);
+      return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null;
     };
 
     var paramsByURL = function paramsByURL(string) {
@@ -109,6 +109,7 @@
       document.title = _this.title + ' ' + _this.settings.separator + ' ' + routeById(newRoute).label;
 
       if (_this.settings.showHide && newRoute === focusId) {
+        document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
       }
 

@@ -17,7 +17,7 @@
       <nav>
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a href="#dynamic">Dynamic content</a></li>
+          <li><a href="#lifecycle">Lifecycle</a></li>
           <li><a href="#subsections">Subsections</a></li>
           <li><a href="#params?foo=bar">Params example</a></li>
         </ul>
@@ -26,7 +26,7 @@
     <main>
       <div id="home">
         <h1>Welcome to the Xiao demo page</h1>
-        <p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement and without the complexity.</p>
+        <p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement. This demo is an incomplete exploration of Xiao. See <a href="https://github.com/Heydon/xiao/blob/master/README.md">the README</a> for more.</p>
         <p>This is the default route, <code>home</code>, and just contains static content, loaded with the web page from the server. Note the <code>id="home"</code> attribution in the HTML:</p>
 <pre><code>&lt;div id="home">
   &lt;h1>A demo built with Xiao&lt;/h1>
@@ -49,9 +49,42 @@
           <p>Try opening developer tools, clicking <a href="#subsections">this Subsections link</a>, then entering <code>document.activeElement</code> into your console. The active element is the focused element.</p>
         </div>
       </div>
-      <div id="dynamic">
-        <h1>Dynamic content</h1>
+      <div id="lifecycle">
+        <h1>Route lifecycles</h1>
+        <p>Routes have a lifecycle that begins with the user's arrival at the route and ends with their departure. You can tap into these lifecycle events with the <code>arrived</code> and <code>departed</code> methods.</p>
+        <p>For example, I can record the arrival time as a timestamp and write it to the page, like this:</p>
+<pre><code>id: 'lifecycle',
+label: 'Route lifecycle',
+arrived(elem) {
+  var time = Date.now();
+  var dynamicElem = elem.querySelector('.timestamp')
+  dynamicElem.textContent = `Route arrival timestamp: ${time}`
+}</code></pre>
         <div class="timestamp box"></div>
+        <p>If you refresh the page, the timestamp updates. It also updates when you move to another route and come back. Obviously, this is a silly example. You're more likely to use the <code>arrived</code> method to load XHR content and/or compile some templates. That sort of thing.</p>
+        <h2>The departed method</h2>
+        <p>The departed method fires when the user leaves the route. One use may be to save some route-related data to <code>localStorage</code>. Below, you should see the message "Welcome!" if it is your first time at this route or "Welcome back!" if you've been here before.</p>
+        <div class="box welcome"></div>
+        <p>We set the storage item on <code>departed</code>&hellip;</p>
+<pre><code>departed(elem) {
+  window.localStorage.setItem('visited', true)
+}
+</code></pre>
+        <p>&hellip;and retrieve it on <code>arrived</code>.</p>
+<pre><code>arrived(elem) {
+  var visited = window.localStorage.getItem('visited')
+  var msg = visited ? "Welcome back!" : "Welcome!"
+  elem.querySelector('.welcome').textContent = msg
+}
+</code></pre>
+      <p>(Note that the <code>departed</code> function only executes when the page's URL changes, not when the page is reloaded.)</p>
+      <h2>Parameters</h2>
+      <p>In these examples, we just used the <code>elem</code> parameter. There are three parameters you can supply to the lifecycle functions in total. In order:</p>
+      <ul>
+        <li><strong><code>elem</code></strong>: the route element (the element carrying the route <code>id</code>)</li>
+        <li><strong><code>params</code></strong>: any <a href="#params?foo=bar">params</a> passed to the route in a query string, converted to an object</li>
+        <li><strong><code>routes</code></strong>: the whole routes object for convenience</li>
+      </ul>
       </div>
       <div id="subsections">
         <h1>Subsections</h1>
@@ -74,22 +107,25 @@
         [
           {
             id: 'home',
-            label: 'Home',
+            label: 'Home'
           },
           {
             id: 'subsections',
             label: 'Subsections within routes'
           },
           {
-            id: 'dynamic',
-            label: 'Dynamic content',
-            arrived(elem, params, routes) {
+            id: 'lifecycle',
+            label: 'Route lifecycle',
+            arrived(elem) {
               var time = Date.now();
-              var dynamicElem = elem.querySelector('.timestamp')
-              dynamicElem.textContent = `Route arrival timestamp: ${time}`
+              var timeElem = elem.querySelector('.timestamp')
+              timeElem.textContent = `Route arrival timestamp: ${time}`
+              var visited = window.localStorage.getItem('visited')
+              var msg = visited ? "Welcome back!" : "Welcome!"
+              elem.querySelector('.welcome').textContent = msg
             },
-            departed(elem, params, routes) {
-
+            departed(elem) {
+              window.localStorage.setItem('visited', true)
             }
           },
           {
