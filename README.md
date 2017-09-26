@@ -1,6 +1,6 @@
 # ![Xiao](images/xiao.png)
 
-Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement and without the complexity.
+Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement.
 
 ## Install
 

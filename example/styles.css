@@ -90,11 +90,12 @@ header svg {
   width: auto;
 }
 
-pre {
+pre, .params-object {
   font-size: 0.75rem;
   padding: 1rem;
   overflow-x: auto;
   border: 1px solid;
+  font-family: monospace;
 }
 
 .hl {
