@@ -5,7 +5,7 @@ Xiao is a small, accessible, framework agnostic, browser-driven routing system. 
 ## Install
 
 ```
-npm i xiao
+npm i xiao-router
 ```
 
 ## Include
@@ -15,13 +15,13 @@ Xiao is just a small script you include in your web page. You have the option of
 ### ES5
 
 ```html
-<script src="../node_modules/xiao/xiao-es5.min.js"></script>
+<script src="../node_modules/xiao-router/xiao-es5.min.js"></script>
 ```
 
 ### ES6
 
 ```html
-<script src="../node_modules/xiao/xiao.min.js"></script>
+<script src="../node_modules/xiao-router/xiao.min.js"></script>
 ```
 
 ## Routes
