@@ -1,6 +1,6 @@
 # ![Xiao](images/xiao.png)
 
-Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement.
+Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single page applications with progressive enhancement. See the **example** folder for a working demo.
 
 ## Install
 
@@ -10,7 +10,19 @@ npm i xiao
 
 ## Include
 
-// TODO
+Xiao is just a small script you include in your web page. You have the option of using the ES5 or slightly smaller but less well-supported ES6 version.
+
+### ES5
+
+```html
+<script src="../node_modules/xiao/xiao-es5.min.js"></script>
+```
+
+### ES6
+
+```html
+<script src="../node_modules/xiao/xiao.min.js"></script>
+```
 
 ## Routes
 
@@ -37,7 +49,7 @@ const routes = [
 
 This routes array is supplied as the first argument of the instantiated Xiao app. The default route — the one the user is directed to when hitting the root of the application — is the second mandatory argument.
 
-```
+```js
 const app = new Xiao(routes, 'home')
 ```
 
@@ -86,7 +98,9 @@ nav [aria-current] {
 
 It is recommended that the `<title>` value you supply is the name of the app. Xiao appends the label for the specific current route after a separator.
 
-`<title>My App | Home</title>`
+```html
+<title>My App | Home</title>
+```
 
 ## The `arrived` and `departed` methods
 

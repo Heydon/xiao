@@ -143,7 +143,7 @@
     window.addEventListener('hashchange', function (e) {
       var id = idByURL(window.location.href);
       var newRoute = parentRouteExists(id);
-      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null;
+      var oldId = e.oldURL.includes('#') ? idByURL(e.oldURL) : null;
       var oldRoute = oldId ? parentRouteExists(oldId) : null;
 
       if (newRoute && newRoute !== oldRoute) {
