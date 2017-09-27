@@ -9,7 +9,8 @@
       showHide: true,
       separator: '|',
       arrived: null,
-      departed: null
+      departed: null,
+      animation: true
     }
 
     for (var setting in options) {
@@ -141,6 +142,29 @@
         reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId)
       }
     })
+
+    if (this.settings.animation) {
+      var links = document.querySelectorAll('[href*="#"]:not([href^="http"])')
+      each.call(links, link => {
+        if (routeExists(idByURL(link.href))) {
+          link.addEventListener('click', e => {
+            e.preventDefault()
+            var routeElem = elem(parentRouteExists(idByURL(window.location.href)))
+            routeElem.classList.add('animate-out')
+            routeElem.addEventListener('animationend', (e) => {
+              reconfigure(parentRouteExists(idByURL(link.href)), idByURL(window.location.href), window.location.href, idByURL(link.href))
+              routeElem.classList.remove('animate-out')
+              window.location.href = link.href
+              var newRouteElem = elem(parentRouteExists(idByURL(link.href)))
+              newRouteElem.classList.add('animate-in')
+              newRouteElem.addEventListener('animationend', (e) => {
+                newRouteElem.classList.remove('animate-in')
+              })
+            })
+          })
+        }
+      })
+    }
   }
 
   Xiao.prototype.reroute = function (id, params) {

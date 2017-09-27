@@ -124,6 +124,26 @@ main ul {
   animation: flash 1s ease-in;
 }
 
+/* Animations */
+
+@keyframes fade-out {
+  0% { opacity: 1 }
+  100% { opacity: 0 }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
+.animate-out {
+  animation: fade-out 1s ease-out 1;
+}
+
+.animate-in {
+  animation: fade-in 1s ease-out 1;
+}
+
 @media (max-width: 550px) {
   nav li {
     width: 50%;
