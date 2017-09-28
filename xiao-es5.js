@@ -23,9 +23,14 @@
     this.ids = routes.map(function (route) {
       return route.id;
     });
+    this.title = document.title;
 
     var elem = function elem(id) {
       return document.getElementById(id);
+    };
+
+    var url = function url() {
+      return window.location.href;
     };
 
     var each = Array.prototype.forEach;
@@ -40,12 +45,6 @@
       return document.querySelectorAll('[href*="#' + id + '"]');
     };
 
-    var routeExists = function routeExists(route) {
-      return _this.ids.find(function (id) {
-        return id === route;
-      });
-    };
-
     var idByURL = function idByURL(string) {
       return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null;
     };
@@ -54,11 +53,11 @@
       return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null;
     };
 
-    var paramsToObject = function paramsToObject(string) {
+    var paramsToObj = function paramsToObj(string) {
       return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null;
     };
 
-    var parentRouteExists = function parentRouteExists(id) {
+    var routeExists = function routeExists(id) {
       return _this.ids.find(function (route) {
         return elem(route).contains(elem(id));
       });
@@ -80,7 +79,7 @@
         elem(focusId).focus();
       }
 
-      var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : null;
+      var oldParams = oldURL ? paramsToObj(paramsByURL(oldURL)) : null;
 
       if (oldRoute && routeExists(oldRoute)) {
         if (_this.settings.departed) {
@@ -91,7 +90,7 @@
         }
       }
 
-      var newParams = paramsToObject(paramsByURL(window.location.href));
+      var newParams = paramsToObj(paramsByURL(url()));
       if (_this.settings.arrived) {
         _this.settings.arrived(elem(newRoute), newParams, routes);
       }
@@ -123,32 +122,30 @@
     };
 
     window.addEventListener('load', function (e) {
-      _this.title = document.title;
-
       routes.forEach(function (route) {
         var region = elem(route.id);
         region.setAttribute('role', 'region');
         region.setAttribute('aria-label', route.label);
       });
 
-      var hash = idByURL(window.location.href);
+      var hash = idByURL(url());
 
-      if (!hash || !parentRouteExists(hash)) {
+      if (!hash || !routeExists(hash)) {
         _this.reroute(defaultId);
       } else {
-        reconfigure(parentRouteExists(hash), null, null, hash);
+        reconfigure(routeExists(hash), null, null, hash);
       }
     });
 
     window.addEventListener('hashchange', function (e) {
-      var id = idByURL(window.location.href);
-      var newRoute = parentRouteExists(id);
+      var id = idByURL(url());
+      var newRoute = routeExists(id);
       var oldId = e.oldURL.includes('#') ? idByURL(e.oldURL) : null;
-      var oldRoute = oldId ? parentRouteExists(oldId) : null;
+      var oldRoute = oldId ? routeExists(oldId) : null;
 
       if (newRoute && newRoute !== oldRoute) {
         var focusId = id === newRoute ? newRoute : id;
-        reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId);
+        reconfigure(newRoute, oldRoute, e.oldURL || null, focusId);
       }
     });
   }

@@ -1,6 +1,6 @@
 {
   "name": "xiao-router",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A small, accessible, browser-driven single-page routing system.",
   "main": "xiao.js",
   "scripts": {

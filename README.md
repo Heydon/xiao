@@ -2,7 +2,7 @@
 
 > **xiǎo**: small, young
 
-Xiao (pronounced "Shh!" + "Ow!") is a small, accessible, framework agnostic, dependency free, browser-driven routing system. Make single page applications with progressive enhancement. See the **example** folder for a working demo.
+Xiao (pronounced "Shh!" + "Ow!") is a small, accessible, framework agnostic, dependency free, browser-driven routing system. Make single-page applications with progressive enhancement. See the **example** folder for a working demo.
 
 ## Install
 
