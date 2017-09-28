@@ -19,9 +19,14 @@
     }
 
     this.ids = routes.map(route => route.id)
+    this.title = document.title
 
     var elem = id => {
       return document.getElementById(id)
+    }
+
+    var url = () => {
+      return window.location.href
     }
 
     var each = Array.prototype.forEach
@@ -34,10 +39,6 @@
       return document.querySelectorAll('[href*="#' + id + '"]')
     }
 
-    var routeExists = route => {
-      return this.ids.find(id => id === route)
-    }
-
     var idByURL = string => {
       return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null
     }
@@ -46,17 +47,17 @@
       return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null
     }
 
-    var paramsToObject = string => {
+    var paramsToObj = string => {
       return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
     }
 
-    var parentRouteExists = id => {
+    var routeExists = id => {
       return this.ids.find(route => elem(route).contains(elem(id)))
     }
 
     var reconfigure = (newRoute, oldRoute, oldURL, focusId) => {
       if (this.settings.showHide) {
-        this.ids.forEach(function (id) {
+        this.ids.forEach(id => {
           elem(id).hidden = true
         })
       }
@@ -70,7 +71,7 @@
         elem(focusId).focus()
       }
 
-      var oldParams = oldURL ? paramsToObject(paramsByURL(oldURL)) : null
+      var oldParams = oldURL ? paramsToObj(paramsByURL(oldURL)) : null
 
       if (oldRoute && routeExists(oldRoute)) {
         if (this.settings.departed) {
@@ -81,7 +82,7 @@
         }
       }
 
-      var newParams = paramsToObject(paramsByURL(window.location.href))
+      var newParams = paramsToObj(paramsByURL(url()))
       if (this.settings.arrived) {
         this.settings.arrived(elem(newRoute), newParams, routes)
       }
@@ -113,32 +114,30 @@
     }
 
     window.addEventListener('load', e => {
-      this.title = document.title
-
       routes.forEach(route => {
         var region = elem(route.id)
         region.setAttribute('role', 'region')
         region.setAttribute('aria-label', route.label)
       })
 
-      var hash = idByURL(window.location.href)
+      var hash = idByURL(url())
 
-      if (!hash || !parentRouteExists(hash)) {
+      if (!hash || !routeExists(hash)) {
         this.reroute(defaultId)
       } else {
-        reconfigure(parentRouteExists(hash), null, null, hash)
+        reconfigure(routeExists(hash), null, null, hash)
       }
     })
 
     window.addEventListener('hashchange', e => {
-      var id = idByURL(window.location.href)
-      var newRoute = parentRouteExists(id)
+      var id = idByURL(url())
+      var newRoute = routeExists(id)
       var oldId = e.oldURL.includes('#') ? idByURL(e.oldURL) : null
-      var oldRoute = oldId ? parentRouteExists(oldId) : null
+      var oldRoute = oldId ? routeExists(oldId) : null
 
       if (newRoute && newRoute !== oldRoute) {
         var focusId = id === newRoute ? newRoute : id
-        reconfigure(newRoute, oldRoute, e.oldURL ? e.oldURL : null, focusId)
+        reconfigure(newRoute, oldRoute, e.oldURL || null, focusId)
       }
     })
   }

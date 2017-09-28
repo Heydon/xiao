@@ -95,7 +95,7 @@ arrived(elem) {
       </div>
       <div id="params">
         <h1>Using params</h1>
-        <p>Sometimes you'll want to pass data between routes, which is what query strings are for. Just add them in the URL of a route link:</p>
+        <p>The point of single-page applications is that different routes have access to the same working data. But sometimes you'll want to pass specific pieces of data between routes,based on user choices. This is what query strings are for. Just add them in the URL of a route link:</p>
 <pre><code>&lt;a href="#params?up=down&left=right">params&lt;/a></code></pre>
         <p>Xiao converts the query string into an object and makes it available in the route object's <code>arrived</code> and <code>departed</code> methods.</p>
 <pre><code>{
@@ -110,7 +110,7 @@ arrived(elem) {
         <div class="box params-object"></div>
       </div>
     </main>
-    <script src="../xiao.js"></script>
+    <script src="../xiao-es5.js"></script>
     <script>
       var app = new Xiao(
         [
