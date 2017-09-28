@@ -11,7 +11,7 @@
     "add-version": "echo \"/*! xiao $(npm run extract-version --silent) — © Heydon Pickering */\n$(cat xiao.min.js)\" > xiao.min.js",
     "build": "npm run uglify && npm run add-version",
     "es5": "babel xiao.js -o xiao-es5.js --presets=es2015-script",
-    "precommit": "npm run lint && npm run build"
+    "precommit": "npm run lint && npm run build && cp xiao-es5.min.js ./docs/xiao-es5.min.js"
   },
   "repository": {
     "type": "git",
