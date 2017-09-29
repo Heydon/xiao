@@ -37,7 +37,7 @@
 <pre><code>var app = new Xiao([{ id: 'home', label: 'Home'  }], 'home')</code></pre>
         <p>The second argument defines the default route, which will be activated if no route hash is provided in the web address on page load.</p>
         <h2>Accessibility semantics</h2>
-        <p>Route elements are given assistive technology-accessible information when a Xiao app is initialized. Note <code>role="region"</code> and <code>aria-label="Home"</code> (from the route object's <code>label</code> property):</p>
+        <p>Route elements are given assistive technology-accessible information when a Xiao app is initialized. Note <code>role="region"</code> and <code>aria-label="Home"</code> (the value of which is taken from either the route element's first heading or the route object's <code>label</code> property):</p>
 <pre><code>&lt;div id="home" <span class="hl">role="region"</span> <span class="hl">aria-label="Home"</span>>
   &lt;h1>A demo built with Xiao&lt;/h1>
   &lt;p>Xiao is a small, accessible, framework agnostic, browser-driven routing system. Make single-page applications with progressive enhancement and without the complexity.&lt;/p>
