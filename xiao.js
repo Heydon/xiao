@@ -20,6 +20,7 @@
 
     this.ids = routes.map(route => route.id)
     this.title = document.title
+    this.firstRun = true
 
     var elem = id => {
       return document.getElementById(id)
