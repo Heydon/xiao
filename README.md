@@ -99,7 +99,7 @@ nav [aria-current] {
 
 ### The `<title>`
 
-It is recommended that the `<title>` value you supply is the name of the app. Xiao appends the label for the specific current route after a separator.
+It is recommended that the `<title>` value you supply is the name of the app. Xiao appends the label for the current route after a separator.
 
 ```html
 <title>My App | Home</title>
@@ -145,7 +145,7 @@ window.addEventListener('reroute', e => {
 
 Xiao capitalizes on standard browser behavior, letting you use links and hash fragments to invoke routes. However, there will be times you want to reroute the user programmatically. A redirect maybe. For this, you can use the `reroute` method.
 
-The first argument is the desired route id and the second any params you may want to supply.
+The first argument is the desired route (or route child element) id and the second any params you may want to supply.
 
 ```js
 app.reroute('login', '?redirect=true')

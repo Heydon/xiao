@@ -44,12 +44,9 @@
       return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null
     }
 
-    var paramsByURL = string => {
-      return string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null
-    }
-
     var paramsToObj = string => {
-      return string ? JSON.parse('{"' + decodeURI(string).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
+      var query = string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null
+      return query ? JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null
     }
 
     var routeExists = id => {
@@ -81,7 +78,7 @@
         }
       }
 
-      var oldParams = oldURL ? paramsToObj(paramsByURL(oldURL)) : null
+      var oldParams = oldURL ? paramsToObj(oldURL) : null
 
       if (oldRoute && routeExists(oldRoute)) {
         if (this.settings.departed) {
@@ -92,7 +89,7 @@
         }
       }
 
-      var newParams = paramsToObj(paramsByURL(url()))
+      var newParams = paramsToObj(url())
       if (this.settings.arrived) {
         this.settings.arrived(elem(newRoute), newParams, routes)
       }
