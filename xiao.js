@@ -56,6 +56,11 @@
       return this.ids.find(route => elem(route).contains(elem(id)))
     }
 
+    var getLabel = route => {
+      var h = elem(route.id).querySelector('h1, h2')
+      return h ? h.textContent : route.label ? route.label : route.id
+    }
+
     var reconfigure = (newRoute, oldRoute, oldURL, focusId) => {
       if (this.settings.showHide) {
         this.ids.forEach(id => {
@@ -68,7 +73,6 @@
         if (this.settings.showHide) {
           newRegion.hidden = false
         }
-        console.log(this.firstRun)
         if (!this.firstRun) {
           elem(focusId).setAttribute('tabindex', '-1')
           elem(focusId).focus()
@@ -103,7 +107,7 @@
         link.setAttribute('aria-current', 'true')
       })
 
-      document.title = `${this.title} ${this.settings.separator} ${routeById(newRoute).label}`
+      document.title = `${this.title} ${this.settings.separator} ${getLabel(routeById(newRoute))}`
 
       if (this.settings.showHide && newRoute === focusId) {
         document.documentElement.scrollTop = 0
@@ -123,7 +127,7 @@
       routes.forEach(route => {
         var region = elem(route.id)
         region.setAttribute('role', 'region')
-        region.setAttribute('aria-label', route.label)
+        region.setAttribute('aria-label', getLabel(route))
       })
 
       var hash = idByURL(url())
