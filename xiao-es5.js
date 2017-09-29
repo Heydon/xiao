@@ -162,5 +162,9 @@
     return this;
   };
 
-  window.Xiao = Xiao;
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = Xiao;
+  } else {
+    window.Xiao = Xiao;
+  }
 })(this);
