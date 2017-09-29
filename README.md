@@ -30,21 +30,18 @@ Xiao is just a small script you include in your web page. You have the option of
 
 In Xiao, routes are just subdocuments of web pages with metadata and (sometimes) methods attached to them. Each is identified by an `id` which corresponds to both a page element (say `id="home"`) and a hash fragment (say `#home`).
 
-Before initializing your Xiao app, you define a routes array. Only the route `id` and route label are mandatory properties.
+Before initializing your Xiao app, you define a routes array. Only the route `id` is mandatory.
 
 ```js
 const routes = [
   {
-    id: 'home',
-    label: 'Home'
+    id: 'home'
   },
   {
-    id: 'about',
-    label: 'About my project'
+    id: 'about'
   },
   {
-    id: 'upload',
-    label: 'Upload a file'
+    id: 'upload'
   }
 ]
 ```
@@ -63,7 +60,11 @@ Whether written by hand or via templating, each route is just an element with an
 </div>
 ```
 
-On initialization, Xiao gives each element corresponding to a route `role="region"` and an `aria-label` of the route object's `label` property.
+On initialization, Xiao gives each element corresponding to a route `role="region"` then calculates a value for an `aria-label`, to further identify the route to assistive technologies. The label is:
+
+* The text content of the route element's first `<h1>` or `<h2>` if it exists
+* Or the content of the route object's `label` property (e.g. `label: 'About my project'`)
+* Or — as a fallback — the route object's `id`
 
 ```html
 <div id="about" role="region" aria-label="About my project">
