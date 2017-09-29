@@ -76,6 +76,7 @@
         if (_this.settings.showHide) {
           newRegion.hidden = false;
         }
+        console.log(_this.firstRun);
         if (!_this.firstRun) {
           elem(focusId).setAttribute('tabindex', '-1');
           elem(focusId).focus();
