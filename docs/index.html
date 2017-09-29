@@ -119,8 +119,7 @@ arrived(elem) {
       var app = new Xiao(
         [
           {
-            id: 'home',
-            label: 'Home'
+            id: 'home'
           },
           {
             id: 'subsections',
@@ -128,7 +127,6 @@ arrived(elem) {
           },
           {
             id: 'lifecycle',
-            label: 'Lifecycles',
             arrived(elem) {
               var time = Date.now();
               var timeElem = elem.querySelector('.timestamp')
