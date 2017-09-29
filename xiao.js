@@ -68,6 +68,7 @@
         if (this.settings.showHide) {
           newRegion.hidden = false
         }
+        console.log(this.firstRun)
         if (!this.firstRun) {
           elem(focusId).setAttribute('tabindex', '-1')
           elem(focusId).focus()

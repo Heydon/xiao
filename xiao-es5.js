@@ -76,8 +76,12 @@
         if (_this.settings.showHide) {
           newRegion.hidden = false;
         }
-        elem(focusId).setAttribute('tabindex', '-1');
-        elem(focusId).focus();
+        if (!_this.firstRun) {
+          elem(focusId).setAttribute('tabindex', '-1');
+          elem(focusId).focus();
+        } else {
+          _this.firstRun = false;
+        }
       }
 
       var oldParams = oldURL ? paramsToObj(paramsByURL(oldURL)) : null;
