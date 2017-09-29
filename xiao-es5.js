@@ -24,6 +24,7 @@
       return route.id;
     });
     this.title = document.title;
+    this.firstRun = true;
 
     var elem = function elem(id) {
       return document.getElementById(id);
