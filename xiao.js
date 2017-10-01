@@ -150,7 +150,7 @@
   }
 
   Xiao.prototype.reroute = function (id, params) {
-    window.location.hash = id + (params || '')
+    window.location.hash = (params || '') + id
     return this
   }
 

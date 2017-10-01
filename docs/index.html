@@ -9,8 +9,8 @@
   </head>
   <body>
     <header role="banner">
-      <a href="http://heydon.github.io/xiao">
-        <svg aria-label="Xiao Router" role="img" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="73.548mm" width="180.34mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 638.98263 260.60408">
+      <a href="http://heydon.github.io/xiao" aria-label="Xiao Router">
+        <svg aria-hidden="true" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="73.548mm" width="180.34mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 638.98263 260.60408">
          <g transform="translate(838.41 -52.495)">
           <path style="stroke-width:0;fill:#000000" d="m258.98 0v19.867h20v-19.867h-20zm120.72 1.0098v20h20v-20l-20-.0002zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v80h-100v-80h-20v199.59h20v-99.59h100v98.58h20v-198.58h-20zm-100 0h20v-20h-20v20zm20-20h20v-20h-20v20zm199.42-40v20h20v-20l-20-.0002zm20 20v20h20v-20h-20zm20 20v20h19.86v138.58h20v-138.58h-19.86v-20h-20zm-40-20h-20v20h20v-20zm-20 20h-20v20h20v-20zm-280.14-1.143v219.72h20v-219.72l-20-.003zm-100 .051v20h20v-20h-20zm0 20h-20v20h20v-20zm-119.62-19.627v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v19.999h20v-19.999h-20zm419.62-19.281v138.58h20v-138.58h-20zm-380.21 19.404v19.996h20v-19.996h-20zm79.3.383v20.003h20v-20.003h-20zm0 20.003h-20v20h20v-20zm-198.07-19.575v19.995h20v-19.995h-20zm20 19.995v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v19.21h-19v20h20v-19.21h18.494v19.5h19.5v19.07h-19.916v20h20v-19.57h19.912v-20h-19.496v-19.5h-19.494v-19.5h-20zm58.99 59v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm-79.912-20.43h-20v20h-20v20h20v-20h20v-20zm-38.078-39.36h-20v20h20v-20zm-20 20h-20v20h20v-20zm77.984-100.01v20h19.996v-20h-19.996zm20.376 19.87v20h20v-20h-20zm-39.788.50v20h20v-20h-20zm80.218.64v20h20v-20h-20zm-20.29 19.37v20h20v-20h-20zm20.29 19.56v20h19.28v20h20v-20h-19.28v-20h-20zm39.28 40v20h20v-20h-20zm-79.63-39.85v20h20v-20h-20zm399.68 40.07v20h20v-20h-20zm20 20v20h20v-20h-20zm20 20v20h20v-20h-20zm20 0h20v-20h-20v20zm20-20h20v-20h-20v20z" transform="translate(-838.41 52.495)"/>
          </g>
@@ -21,7 +21,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#lifecycle">Lifecycle</a></li>
           <li><a href="#subsections">Subsections</a></li>
-          <li><a href="#params?up=down&left=right">Params</a></li>
+          <li><a href="?up=down&left=right#params">Params</a></li>
         </ul>
       </nav>
     </header>
@@ -82,7 +82,7 @@ arrived(elem) {
       <p>In these examples, we just used the <code>elem</code> parameter. There are three parameters you can supply to the lifecycle functions in total. In order:</p>
       <ul>
         <li><strong><code>elem</code></strong>: the route element (the element carrying the route <code>id</code> and containing the route content)</li>
-        <li><strong><code>params</code></strong>: any <a href="#params?foo=bar">params</a> passed to the route in a query string, converted to an object</li>
+        <li><strong><code>params</code></strong>: any <a href="?foo=bar#params">params</a> passed to the route in a query string, converted to an object</li>
         <li><strong><code>routes</code></strong>: the whole routes object for convenience</li>
       </ul>
       </div>
@@ -98,7 +98,7 @@ arrived(elem) {
       <div id="params">
         <h1>Using params</h1>
         <p>The point of single-page applications is that different routes have access to the same working data. But sometimes you'll want to pass specific pieces of data between routes, based on user choices. This is what query strings are for. Just add them in the URL of a route link:</p>
-<pre><code>&lt;a href="#params?up=down&left=right">params&lt;/a></code></pre>
+<pre><code>&lt;a href="?up=down&left=right#params">params&lt;/a></code></pre>
         <p>Xiao converts the query string into an object and makes it available in the route object's <code>arrived</code> and <code>departed</code> methods.</p>
 <pre><code>{
   id: 'params',

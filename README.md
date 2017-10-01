@@ -125,7 +125,7 @@ You can hook into lifecycle events for routes to perform operations. In Xiao, th
 As you can see, there are three parameters available in each case:
 
 * **elem** (node): the HTML element that corresponds to the route (carries the route `id`)
-* **params** (object): Any params passed to the route via a query string (e.g. `?foo=bar&ding=dong` will be passed as `{foo: 'bar', ding: 'dong'}`)
+* **params** (object): Any params passed to the route via a query string (e.g. `?foo=bar&ding=dong` will be passed as `{foo: 'bar', ding: 'dong'}`). In a well-formed URL, the parameters should precede the hash (e.g. `href="?foo=bar#myRouteElem"`)
 * **routes** (object): The whole routes array, for convenience
 
 ## Events
