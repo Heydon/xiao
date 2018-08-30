@@ -128,33 +128,33 @@ arrived(elem) {
           },
           {
             id: 'lifecycle',
-            arrived(elem) {
+            arrived: function(elem) {
               var time = Date.now();
-              var timeElem = elem.querySelector('.timestamp')
-              timeElem.textContent = `Route arrival timestamp: ${time}`
-              var visited = window.localStorage.getItem('visited')
-              var msg = visited ? "Welcome back!" : "Welcome!"
-              elem.querySelector('.welcome').textContent = msg
+              var timeElem = elem.querySelector('.timestamp');
+              timeElem.textContent = 'Route arrival timestamp' + time;
+              var visited = window.localStorage.getItem('visited');
+              var msg = visited ? "Welcome back!" : "Welcome!";
+              elem.querySelector('.welcome').textContent = msg;
             },
-            departed(elem) {
-              window.localStorage.setItem('visited', true)
+            departed: function(elem) {
+              window.localStorage.setItem('visited', true);
             }
           },
           {
             id: 'params',
             label: 'Params example',
-            arrived(elem, params, routes) {
-              var paramsElem = elem.querySelector('.params-object')
-              paramsElem.textContent = JSON.stringify(params)
+            arrived: function(elem, params, routes) {
+              var paramsElem = elem.querySelector('.params-object');
+              paramsElem.textContent = JSON.stringify(params);
             }
           }
         ],
         'home'
       )
 
-      window.addEventListener('reroute', e => {
-        console.log('Old route:', e.detail.oldRoute)
-        console.log('New route:', e.detail.newRoute)
+      window.addEventListener('reroute', function(e) {
+        console.log('Old route:', e.detail.oldRoute);
+        console.log('New route:', e.detail.newRoute);
       })
     </script>
   </body>
