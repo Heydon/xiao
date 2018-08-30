@@ -130,22 +130,22 @@ arrived(elem) {
             id: 'lifecycle',
             arrived: function(elem) {
               var time = Date.now();
-              var timeElem = elem.querySelector('.timestamp')
-              timeElem.textContent = `Route arrival timestamp: ${time}`
-              var visited = window.localStorage.getItem('visited')
-              var msg = visited ? "Welcome back!" : "Welcome!"
-              elem.querySelector('.welcome').textContent = msg
+              var timeElem = elem.querySelector('.timestamp');
+              timeElem.textContent = 'Route arrival timestamp' + time;
+              var visited = window.localStorage.getItem('visited');
+              var msg = visited ? "Welcome back!" : "Welcome!";
+              elem.querySelector('.welcome').textContent = msg;
             },
             departed: function(elem) {
-              window.localStorage.setItem('visited', true)
+              window.localStorage.setItem('visited', true);
             }
           },
           {
             id: 'params',
             label: 'Params example',
             arrived: function(elem, params, routes) {
-              var paramsElem = elem.querySelector('.params-object')
-              paramsElem.textContent = JSON.stringify(params)
+              var paramsElem = elem.querySelector('.params-object');
+              paramsElem.textContent = JSON.stringify(params);
             }
           }
         ],
