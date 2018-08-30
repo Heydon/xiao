@@ -152,9 +152,9 @@ arrived(elem) {
         'home'
       )
 
-      window.addEventListener('reroute', e => {
-        console.log('Old route:', e.detail.oldRoute)
-        console.log('New route:', e.detail.newRoute)
+      window.addEventListener('reroute', function(e) {
+        console.log('Old route:', e.detail.oldRoute);
+        console.log('New route:', e.detail.newRoute);
       })
     </script>
   </body>
