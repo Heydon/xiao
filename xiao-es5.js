@@ -47,11 +47,11 @@
     };
 
     var idByURL = function idByURL(string) {
-      return string.includes('#') ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null;
+      return string.indexOf('#') > -1 ? string.match(/#.*?(\?|$)/gi)[0].replace('?', '').substr(1) : null;
     };
 
     var paramsToObj = function paramsToObj(string) {
-      var query = string.includes('?') ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null;
+      var query = string.indexOf('#') > -1 ? string.match(/\?.*?(#|$)/gi)[0].replace('#', '').substr(1) : null;
       return query ? JSON.parse('{"' + decodeURI(query).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}') : null;
     };
 
@@ -147,7 +147,7 @@
     window.addEventListener('hashchange', function (e) {
       var id = idByURL(url());
       var newRoute = routeExists(id);
-      var oldId = e.oldURL.includes('#') ? idByURL(e.oldURL) : null;
+      var oldId = e.oldURL.indexOf('#') > -1 ? idByURL(e.oldURL) : null;
       var oldRoute = oldId ? routeExists(oldId) : null;
 
       if (newRoute && newRoute !== oldRoute) {
@@ -158,7 +158,7 @@
   }
 
   Xiao.prototype.reroute = function (id, params) {
-    window.location.hash = id + (params || '');
+    window.location.hash = (params || '') + id;
     return this;
   };
 

@@ -1,12 +1,12 @@
 {
   "name": "xiao-router",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A small, accessible, browser-driven single-page routing system.",
   "main": "xiao.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard ./xiao.js",
-    "uglify": "uglifyjs xiao.js -o xiao.min.js && npm run es5 && uglifyjs xiao-es5.js -o xiao-es5.min.js",
+    "uglify": "uglifyjs xiao.js -o xiao.min.js && uglifyjs xiao-es5.js -o xiao-es5.min.js",
     "extract-version": "cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]'",
     "add-version": "echo \"/*! xiao $(npm run extract-version --silent) — © Heydon Pickering */\n$(cat xiao.min.js)\" > xiao.min.js",
     "build": "npm run uglify && npm run add-version",
